@@ -413,6 +413,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>game</GroupName>
+          <Files>
+            <File>
+              <FileName>game.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\game\game.c</FilePath>
+            </File>
+            <File>
+              <FileName>game.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\game\game.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>led</GroupName>
           <Files>
             <File>
@@ -1042,6 +1057,21 @@
               <FileName>system_LPC17xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\system_LPC17xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>game</GroupName>
+          <Files>
+            <File>
+              <FileName>game.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\game\game.c</FilePath>
+            </File>
+            <File>
+              <FileName>game.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\game\game.h</FilePath>
             </File>
           </Files>
         </Group>
