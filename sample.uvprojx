@@ -413,6 +413,26 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>led</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\funct_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\led\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>lib_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\lib_led.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>timer</GroupName>
           <Files>
             <File>
@@ -1022,6 +1042,26 @@
               <FileName>system_LPC17xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\system_LPC17xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>led</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\funct_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\led\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>lib_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\lib_led.c</FilePath>
             </File>
           </Files>
         </Group>
