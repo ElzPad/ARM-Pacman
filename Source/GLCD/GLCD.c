@@ -611,7 +611,51 @@ void LCD_DrawRect( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 * Attention		 : None
 *******************************************************************************/
 void LCD_DrawMap(void) {
-	LCD_DrawRect(10, 50, 230, 270, Blue);
+	// Horizontal borders
+	LCD_DrawRect(0, 50, 239, 55, Blue);
+	LCD_DrawRect(0, 265, 239, 270, Blue);
+	
+	// Vertical borders
+	LCD_DrawRect(0, 55, 5, 110, Blue);
+	LCD_DrawRect(0, 210, 5, 265, Blue);
+	LCD_DrawRect(234, 55, 239, 110, Blue);
+	LCD_DrawRect(234, 210, 239, 265, Blue);
+	
+	// Lateral bumps
+	LCD_DrawRect(0, 110, 40, 115, Blue);
+	LCD_DrawRect(35, 110, 40, 150, Blue);
+	LCD_DrawRect(0, 145, 40, 150, Blue);
+	
+	LCD_DrawRect(0, 170, 40, 175, Blue);
+	LCD_DrawRect(35, 170, 40, 210, Blue);
+	LCD_DrawRect(0, 205, 40, 210, Blue);
+	
+	LCD_DrawRect(200, 110, 239, 115, Blue);
+	LCD_DrawRect(200, 110, 205, 150, Blue);
+	LCD_DrawRect(200, 145, 239, 150, Blue);
+	
+	LCD_DrawRect(200, 170, 239, 175, Blue);
+	LCD_DrawRect(200, 170, 205, 210, Blue);
+	LCD_DrawRect(200, 205, 239, 210, Blue);
+	
+	// Center Rectangle
+	LCD_DrawRect(80, 140, 160, 180, Blue);
+	
+	// Top Rectangles
+	LCD_DrawRect(115, 55, 125, 90, Blue);
+	
+	LCD_DrawRect(40, 75, 55, 90, Blue);
+	LCD_DrawRect(75, 75, 90, 110, Blue);
+	
+	LCD_DrawRect(150, 75, 210, 85, Blue);
+	LCD_DrawRect(120, 110, 175, 120, Blue);
+	
+	// Bottom Rectangles
+	LCD_DrawRect(30, 230, 110, 240, Blue);
+	LCD_DrawRect(80, 200, 110, 240, Blue);
+	
+	LCD_DrawRect(130, 230, 210, 240, Blue);
+	LCD_DrawRect(130, 200, 160, 240, Blue);
 }
 
 /******************************************************************************
@@ -624,7 +668,7 @@ void LCD_DrawTime(short int time) {
   char timeString[4];
 	sprintf(timeString, "%02hds", time);
 	GUI_Text(20, 10, (uint8_t *) "Game Over in", White, Black);
-	GUI_Text(60, 30, (uint8_t *) timeString, White, Black);
+	GUI_Text(60, 25, (uint8_t *) timeString, White, Black);
 }
 /******************************************************************************
 * Function Name  : LCD_DrawScore
@@ -636,7 +680,7 @@ void LCD_DrawScore(short int score) {
 	char scoreString[6];
 	sprintf(scoreString, "%05hd", score);
 	GUI_Text(160, 10, (uint8_t *) "SCORE", White, Black);
-	GUI_Text(158, 30, (uint8_t *) scoreString, White, Black);
+	GUI_Text(158, 25, (uint8_t *) scoreString, White, Black);
 }
 
 /******************************************************************************
