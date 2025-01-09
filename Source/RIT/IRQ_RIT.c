@@ -35,73 +35,92 @@ unsigned char vect[N];
  
 
 void RIT_IRQHandler (void)
-{			
-/* Static as its value persists between calls to the function. It is not reinitialized each time the function is executed.*/
-static uint8_t position=0;
-
-/*************************INT0***************************/
-if(down_0 !=0){
-	down_0++;
-	if((LPC_GPIO2->FIOPIN & (1<<10)) == 0){
-		switch(down_0){
-			case 2:
-				TogglePause();
+{
+	static int j_up = 0;
+	static int j_down = 0;
+	static int j_left = 0;
+	static int j_right = 0;
+	
+	UpdateFrames();
+	
+	if((LPC_GPIO1->FIOPIN & (1<<29)) == 0){	
+		/* Joytick UP pressed */
+		j_up++;
+		switch(j_up){
+			case 1:
+				SetDirection(0);
 				break;
 			default:
 				break;
 		}
 	}
-	else {	/* button released */
-		down_0=0;			
-		NVIC_EnableIRQ(EINT0_IRQn);							 /* disable Button interrupts			*/
-		LPC_PINCON->PINSEL4    |= (1 << 20);     /* External interrupt 0 pin selection */
+	else{
+			j_up=0;
 	}
-} // end INT0
-
-/*************************KEY1***************************/
-if(down_1 !=0){
-	down_1++;
-	if((LPC_GPIO2->FIOPIN & (1<<11)) == 0){
-		switch(down_1){
-			case 2:
+	
+	if((LPC_GPIO1->FIOPIN & (1<<28)) == 0){	
+		/* Joytick RIGHT pressed */
+		j_right++;
+		switch(j_right){
+			case 1:
+				SetDirection(1);
 				break;
 			default:
 				break;
 		}
 	}
-	else {	/* button released */
-		down_1=0;			
-		NVIC_EnableIRQ(EINT1_IRQn);							 /* disable Button interrupts			*/
-		LPC_PINCON->PINSEL4    |= (1 << 22);     /* External interrupt 0 pin selection */
+	else{
+			j_right=0;
 	}
-} // end KEY1
-
-/*************************KEY2***************************/
-if(down_2 !=0){
-	down_2++;
-	if((LPC_GPIO2->FIOPIN & (1<<12)) == 0){
-		switch(down_2){
-			case 2:
-				if( position == 7){
-					LED_On(0);
-					LED_Off(7);
-					position = 0;
-				}
-				else{
-					LED_Off(position);
-					LED_On(++position);
-				}
+	
+	if((LPC_GPIO1->FIOPIN & (1<<26)) == 0){	
+		/* Joytick DOWN pressed */
+		j_down++;
+		switch(j_down){
+			case 1:
+				SetDirection(2);
 				break;
 			default:
 				break;
 		}
 	}
-	else {	/* button released */
-		down_2=0;		
-		NVIC_EnableIRQ(EINT2_IRQn);							 /* disable Button interrupts			*/
-		LPC_PINCON->PINSEL4    |= (1 << 24);     /* External interrupt 0 pin selection */
+	else{
+			j_down=0;
 	}
-} // end KEY2
+	
+	if((LPC_GPIO1->FIOPIN & (1<<27)) == 0){	
+		/* Joytick LEFT pressed */
+		j_left++;
+		switch(j_left){
+			case 1:
+				SetDirection(3);
+				break;
+			default:
+				break;
+		}
+	}
+	else{
+			j_left=0;
+	}
+	
+	/*************************INT0***************************/
+	if(down_0 !=0){
+		down_0++;
+		if((LPC_GPIO2->FIOPIN & (1<<10)) == 0){
+			switch(down_0){
+				case 2:
+					TogglePause();
+					break;
+				default:
+					break;
+			}
+		}
+		else {	/* button released */
+			down_0=0;			
+			NVIC_EnableIRQ(EINT0_IRQn);							 /* disable Button interrupts			*/
+			LPC_PINCON->PINSEL4    |= (1 << 20);     /* External interrupt 0 pin selection */
+		}
+	} // end INT0
 	
 	reset_RIT();
   LPC_RIT->RICTRL |= 0x1;	/* clear interrupt flag */

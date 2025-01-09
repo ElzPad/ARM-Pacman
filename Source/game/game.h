@@ -18,12 +18,16 @@ typedef struct {
     short int lives;         // Remaining lives
 	  short int pills;				 // Remaining pills
     short int time;          // Remaining time
-		uint8_t **map;           // Game map
+		short int positionX;		 // X coordinate in the map
+	  short int positionY;     // Y coordinate in the map
+	  short int direction;
 } Game;
 
 void GameInit(void);
 void TogglePause(void);
+void SetDirection(short int direction);
 void UpdateSeconds(void);
+void UpdateFrames(void);
 void Draw(void);
 void DrawTime(short int);
 

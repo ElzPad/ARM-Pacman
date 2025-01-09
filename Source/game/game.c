@@ -139,6 +139,9 @@ void GameInit(void) {
   GameVar->lives = 1;                          // Initial number of lives is 1
 	GameVar->pills = 240; 										   // Initial number of pills is 240
   GameVar->time = 25;                          // Start with 60s remaining
+	GameVar->positionX = 24;
+	GameVar->positionY = 28;
+	GameVar->direction = 0;
 }
 
 void TogglePause() {
@@ -147,6 +150,10 @@ void TogglePause() {
 	} else if (GameVar->currentState == GAME_STATE_PLAYING) {
 		GameVar->currentState = GAME_STATE_PAUSED;
 	}
+}
+
+void SetDirection(short int direction) {
+	GameVar->direction = direction;
 }
 
 void UpdateSeconds() {
@@ -160,6 +167,7 @@ void UpdateSeconds() {
 			LCD_DrawImage(20, 280, 30, lifePixels);
 			GeneratePowerPills();
 		  DrawPills();
+			LCD_DrawCharacter(GameVar->positionX, GameVar->positionY, GameVar->direction);
 			enable_RIT();
 			GameVar->currentState = GAME_STATE_PAUSED;
 		  break;
@@ -188,6 +196,59 @@ void UpdateSeconds() {
 		
 		default:
 			break;
+	}
+}
+
+void UpdateFrames() {
+	if (GameVar->currentState == GAME_STATE_PLAYING) {
+		switch(GameVar->direction) {
+			case 0:
+				if (map[GameVar->positionY-1][GameVar->positionX] != 1) {
+					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					GameVar->positionY -= 1;
+				}
+				break;
+			case 1:
+				if (GameVar->positionX==47) {
+					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					GameVar->positionX = 0;
+				} else if (map[GameVar->positionY][GameVar->positionX+1] != 1) {
+					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					GameVar->positionX += 1;
+				}
+				break;
+			case 2:
+				if (map[GameVar->positionY+1][GameVar->positionX] != 1) {
+					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					GameVar->positionY += 1;
+				}
+				break;
+			case 3:
+				if (GameVar->positionX==0) {
+					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					GameVar->positionX = 47;
+				} else if (map[GameVar->positionY][GameVar->positionX-1] != 1) {
+					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					GameVar->positionX -= 1;
+				}
+				break;
+			default:
+				break;
+		}
+		LCD_DrawCharacter(GameVar->positionX, GameVar->positionY, GameVar->direction);
+	
+		if (map[GameVar->positionY][GameVar->positionX] == 2) {
+			GameVar->score += 10;
+			map[GameVar->positionY][GameVar->positionX] = 0;
+		} else if (map[GameVar->positionY][GameVar->positionX] == 3) {
+			GameVar->score += 50;
+			map[GameVar->positionY][GameVar->positionX] = 0;
+		}
+		
+		if (GameVar->lives <3 && (GameVar->score > GameVar->lives * 100)) {
+			GameVar->lives += 1;
+			LCD_DrawImage(20+35*(GameVar->lives-1), 280, 30, lifePixels);
+		}
 	}
 }
 

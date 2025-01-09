@@ -37,8 +37,8 @@ int main(void)
 {
   SystemInit();  												/* System Initialization (i.e., PLL)  */
 	
-  NVIC_SetPriority(RIT_IRQn, 1);
-	NVIC_SetPriority(TIMER0_IRQn, 3);
+  NVIC_SetPriority(RIT_IRQn, 0);
+	NVIC_SetPriority(TIMER0_IRQn, 2);
 	
 	LCD_Initialization();
   TP_Init();
