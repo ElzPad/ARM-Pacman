@@ -14,15 +14,23 @@ void GameInit(void) {
 	GameVar->currentState = GAME_STATE_PLAYING;  // Start game state
   GameVar->score = 0;                          // Initial score is 0
   GameVar->lives = 1;                          // Initial number of lives is 1
-	GameVar->pills = 0;												 // Initial number of pills is 240
-  GameVar->time = 5;                          // Start with 60s remaining
+	GameVar->pills = 240; 										   // Initial number of pills is 240
+  GameVar->time = 25;                           // Start with 60s remaining
 }
 
 void UpdateSeconds() {
 	switch (GameVar->currentState) {
+		case GAME_STATE_START:
+			LCD_DrawTime(GameVar->time);
+			LCD_DrawScore(GameVar->score);
+			LCD_DrawMap();
+			GameVar->currentState = GAME_STATE_PAUSED;
+		  break;
+		
 		case GAME_STATE_PLAYING:
 			GameVar->time = GameVar->time >= 1 ? GameVar->time-1 : 0;
 			LCD_DrawTime(GameVar->time);
+		  LCD_DrawScore(GameVar->score);
 			if (GameVar->time == 0) {
 				if (GameVar->pills > 0)
 					LCD_DrawGameOver();

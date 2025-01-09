@@ -596,6 +596,24 @@ void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 	}
 } 
 
+
+void LCD_DrawRect( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color ) {
+	LCD_DrawLine(x0, y0, x0, y1, color);
+	LCD_DrawLine(x0, y0, x1, y0, color);
+	LCD_DrawLine(x0, y1, x1, y1, color);
+	LCD_DrawLine(x1, y0, x1, y1, color);
+}
+
+/******************************************************************************
+* Function Name  : LCD_DrawTime
+* Output         : None
+* Return         : None
+* Attention		 : None
+*******************************************************************************/
+void LCD_DrawMap(void) {
+	
+}
+
 /******************************************************************************
 * Function Name  : LCD_DrawTime
 * Output         : None
@@ -603,9 +621,22 @@ void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 * Attention		 : None
 *******************************************************************************/
 void LCD_DrawTime(short int time) {
-  char timeString[17];
-	sprintf(timeString, "Game Over in %hds", time);
-	GUI_Text(0, 280, (uint8_t *) timeString, Red, White);
+  char timeString[4];
+	sprintf(timeString, "%02hds", time);
+	GUI_Text(20, 20, (uint8_t *) "Game Over in", White, Black);
+	GUI_Text(60, 40, (uint8_t *) timeString, White, Black);
+}
+/******************************************************************************
+* Function Name  : LCD_DrawScore
+* Output         : None
+* Return         : None
+* Attention		 : None
+*******************************************************************************/
+void LCD_DrawScore(short int score) {
+	char scoreString[6];
+	sprintf(scoreString, "%05hd", score);
+	GUI_Text(160, 20, (uint8_t *) "SCORE", White, Black);
+	GUI_Text(158, 40, (uint8_t *) scoreString, White, Black);
 }
 
 /******************************************************************************
@@ -615,10 +646,10 @@ void LCD_DrawTime(short int time) {
 * Attention		 : None
 *******************************************************************************/
 void LCD_DrawGameOver (void) {
-	GUI_Text(100, 120, (uint8_t *) "GAME OVER", White, Black);
+	GUI_Text(80, 150, (uint8_t *) "GAME OVER", White, Black);
 }
 void LCD_DrawWinMessage (void) {
-	GUI_Text(100, 120, (uint8_t *) "VICTORY!", White, Black);
+	GUI_Text(80, 150, (uint8_t *) "VICTORY!", White, Black);
 }
 
 /******************************************************************************

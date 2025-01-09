@@ -11,7 +11,7 @@ typedef enum {
 
 typedef struct {
     GameState currentState;  // Current state of the game
-    int score;               // Player's current score
+    short int score;               // Player's current score
     short int lives;         // Remaining lives
 	  short int pills;				 // Remaining pills
     short int time;          // Remaining time
