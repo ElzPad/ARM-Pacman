@@ -94,6 +94,7 @@ uint16_t LCD_GetPoint(uint16_t Xpos,uint16_t Ypos);
 void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 void LCD_DrawRect( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
+void LCD_DrawRectBorders( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 
 void LCD_DrawMap(void);
 void LCD_DrawTime( short int time );
@@ -101,6 +102,7 @@ void LCD_DrawScore( short int score );
 void LCD_DrawGameOver(void);
 void LCD_DrawWinMessage(void);
 void LCD_DrawPauseMessage(void);
+void LCD_ClearMessage (void);
 void LCD_DrawImage(int startX, int startY, int size, uint16_t* imagePixels);
 
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );

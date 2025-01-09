@@ -1,7 +1,6 @@
 #include "button.h"
 #include "LPC17xx.h"
 
-//	#include "../led/led.h" 					/* do not needed anymore, make your project clean */
 #include "../RIT/RIT.h"		  			/* you now need RIT library 			 */
 
 extern int down_0;

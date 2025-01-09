@@ -5,6 +5,7 @@ typedef enum {
     GAME_STATE_START = 0,
     GAME_STATE_PLAYING,      // The game is being played
     GAME_STATE_PAUSED,       // The game is paused
+		GAME_STATE_RESUMED,			 // The game is resuming
     GAME_STATE_GAME_OVER,    // The game is over
     GAME_STATE_EXIT          // The game is exiting
 } GameState;
@@ -18,8 +19,9 @@ typedef struct {
 } Game;
 
 void GameInit(void);
-void UpdateSeconds();
-void Draw();
+void TogglePause(void);
+void UpdateSeconds(void);
+void Draw(void);
 void DrawTime(short int);
 
 #endif

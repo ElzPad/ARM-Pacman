@@ -53,6 +53,14 @@ void GameInit(void) {
   GameVar->time = 25;                           // Start with 60s remaining
 }
 
+void TogglePause() {
+	if (GameVar->currentState == GAME_STATE_PAUSED) {
+		GameVar->currentState = GAME_STATE_RESUMED;
+	} else if (GameVar->currentState == GAME_STATE_PLAYING) {
+		GameVar->currentState = GAME_STATE_PAUSED;
+	}
+}
+
 void UpdateSeconds() {
 	switch (GameVar->currentState) {
 		case GAME_STATE_START:
@@ -79,6 +87,11 @@ void UpdateSeconds() {
 		case GAME_STATE_PAUSED:
 			LCD_DrawPauseMessage();
 		  break;
+		
+		case GAME_STATE_RESUMED:
+			LCD_ClearMessage();
+			GameVar->currentState = GAME_STATE_PLAYING;
+			break;			
 		
 		default:
 			break;
