@@ -9,6 +9,7 @@
 *********************************************************************************************************/
 #include "LPC17xx.h"
 #include "timer.h"
+#include "../game//game.h"
 #include "../led/led.h"
 
 /******************************************************************************
@@ -27,7 +28,7 @@ unsigned char ledVal = 0xA5;
 void TIMER0_IRQHandler (void)
 {
 	if (LPC_TIM0->IR & 1) {
-		LED_Out(0);
+		UpdateSeconds();
 		LPC_TIM0->IR = 1;			// clear interrupt flag
 	}
 	else if (LPC_TIM0->IR & 2) {

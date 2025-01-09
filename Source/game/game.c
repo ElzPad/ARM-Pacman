@@ -4,21 +4,37 @@
 #include "./game.h"
 #include "../GLCD//GLCD.h"
 
-Game *GameVar;
+static Game *GameVar = NULL;
 
-void GameInit() {
-  GameVar = (Game *) malloc(sizeof(Game));
-	GameVar->currentState = GAME_STATE_START;  // Start game state
-  GameVar->score = 0;                        // Initial score is 0
-  GameVar->lives = 3;                        // Initial lives is 3
-  GameVar->time = 60;                        // Start with 60s remaining
+void GameInit(void) {
+	GameVar = (Game *) malloc(sizeof(Game));
+	if (GameVar == NULL) {
+		exit(1);
+	}
+	GameVar->currentState = GAME_STATE_PLAYING;  // Start game state
+  GameVar->score = 0;                          // Initial score is 0
+  GameVar->lives = 1;                          // Initial number of lives is 1
+	GameVar->pills = 0;												 // Initial number of pills is 240
+  GameVar->time = 5;                          // Start with 60s remaining
 }
 
 void UpdateSeconds() {
-	if (GameVar->currentState == GAME_STATE_PLAYING) {
-		GameVar->time = GameVar->time >= 1 ? GameVar->time-1 : 0;
-  }
-	LCD_DrawTime(GameVar->time);
+	switch (GameVar->currentState) {
+		case GAME_STATE_PLAYING:
+			GameVar->time = GameVar->time >= 1 ? GameVar->time-1 : 0;
+			LCD_DrawTime(GameVar->time);
+			if (GameVar->time == 0) {
+				if (GameVar->pills > 0)
+					LCD_DrawGameOver();
+				else
+					LCD_DrawWinMessage();
+				GameVar->currentState = GAME_STATE_GAME_OVER;
+			}
+			break;
+			
+		default:
+			break;
+	}
 }
 
 void Draw() {

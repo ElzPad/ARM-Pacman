@@ -24,8 +24,8 @@
 #include "LPC17xx.h"
 #include "GLCD/GLCD.h" 
 #include "TouchPanel/TouchPanel.h"
+#include "game/game.h"
 #include "timer/timer.h"
-
 
 #ifdef SIMULATOR
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
@@ -39,11 +39,13 @@ int main(void)
   LCD_Initialization();
 	
   TP_Init();
-	TouchPanel_Calibrate();
+	// TouchPanel_Calibrate();
 	
 	LCD_Clear(Black);
-	GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear  ", Red, White);
-	//LCD_DrawLine(0, 0, 200, 200, White);
+	
+	GameInit();
+	init_timer(0, 0, 0, 3, 0xA7840);
+	enable_timer(0);
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						

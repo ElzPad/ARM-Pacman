@@ -12,11 +12,12 @@ typedef enum {
 typedef struct {
     GameState currentState;  // Current state of the game
     int score;               // Player's current score
-    int lives;               // Remaining lives
+    short int lives;         // Remaining lives
+	  short int pills;				 // Remaining pills
     short int time;          // Remaining time
 } Game;
 
-void GameInit();
+void GameInit(void);
 void UpdateSeconds();
 void Draw();
 void DrawTime(short int);

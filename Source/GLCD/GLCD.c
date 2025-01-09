@@ -598,12 +598,6 @@ void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 
 /******************************************************************************
 * Function Name  : LCD_DrawTime
-* Description    : 将Lcd屏上任意位置显示一个字符
-* Input          : - Xpos: 水平坐标 
-*                  - Ypos: 垂直坐标  
-*				   - ASCI: 显示的字符
-*				   - charColor: 字符颜色   
-*				   - bkColor: 背景颜色 
 * Output         : None
 * Return         : None
 * Attention		 : None
@@ -612,6 +606,19 @@ void LCD_DrawTime(short int time) {
   char timeString[17];
 	sprintf(timeString, "Game Over in %hds", time);
 	GUI_Text(0, 280, (uint8_t *) timeString, Red, White);
+}
+
+/******************************************************************************
+* Function Name  : LCD_DrawGameOver
+* Output         : None
+* Return         : None
+* Attention		 : None
+*******************************************************************************/
+void LCD_DrawGameOver (void) {
+	GUI_Text(100, 120, (uint8_t *) "GAME OVER", White, Black);
+}
+void LCD_DrawWinMessage (void) {
+	GUI_Text(100, 120, (uint8_t *) "VICTORY!", White, Black);
 }
 
 /******************************************************************************
