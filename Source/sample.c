@@ -37,19 +37,22 @@ int main(void)
 {
   SystemInit();  												/* System Initialization (i.e., PLL)  */
 	
-  LCD_Initialization();
+  NVIC_SetPriority(RIT_IRQn, 1);
+	NVIC_SetPriority(TIMER0_IRQn, 3);
+	
+	LCD_Initialization();
   TP_Init();
 	// TouchPanel_Calibrate();
-	
 	LCD_Clear(Black);
 	
-	GameInit();
+	init_RIT(0x00AC4B40);
 	init_timer(0, 0, 0, 3, 0xA7840);
-	enable_timer(0);
-	
+	init_timer(1, 0, 0, 0, 0xD234A2B);
+	GameInit();
 	BUTTON_init();												/* BUTTON Initialization              */
-	init_RIT(0x004C4B40);
-	enable_RIT();
+	
+	enable_timer(0);
+	enable_timer(1);
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						

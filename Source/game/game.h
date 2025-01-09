@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <stdint.h>
+
 typedef enum {
     GAME_STATE_START = 0,
     GAME_STATE_PLAYING,      // The game is being played
@@ -12,10 +14,11 @@ typedef enum {
 
 typedef struct {
     GameState currentState;  // Current state of the game
-    short int score;               // Player's current score
+    short int score;         // Player's current score
     short int lives;         // Remaining lives
 	  short int pills;				 // Remaining pills
     short int time;          // Remaining time
+		uint8_t **map;           // Game map
 } Game;
 
 void GameInit(void);

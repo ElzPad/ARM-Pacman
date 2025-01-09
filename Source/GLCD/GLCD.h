@@ -94,7 +94,7 @@ uint16_t LCD_GetPoint(uint16_t Xpos,uint16_t Ypos);
 void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 void LCD_DrawRect( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
-void LCD_DrawRectBorders( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
+void LCD_DrawMapRectBorders( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 
 void LCD_DrawMap(void);
 void LCD_DrawTime( short int time );

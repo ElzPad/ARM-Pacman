@@ -604,7 +604,9 @@ void LCD_DrawRect( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 	}
 }
 
-void LCD_DrawRectBorders( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color ) {
+void LCD_DrawMapRectBorders( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color ) {
+	int x=0, y=0;
+	
 	LCD_DrawLine(x0, y0, x0, y1, color);
 	LCD_DrawLine(x0, y0, x1, y0, color);
 	LCD_DrawLine(x0, y1, x1, y1, color);
@@ -617,52 +619,56 @@ void LCD_DrawRectBorders( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , u
 * Return         : None
 * Attention		 : None
 *******************************************************************************/
-void LCD_DrawMap(void) {
+void LCD_DrawMap(void) {	
 	// Horizontal borders
-	LCD_DrawRectBorders(0, 50, 239, 55, Blue);
-	LCD_DrawRectBorders(0, 265, 239, 270, Blue);
+	LCD_DrawMapRectBorders(0, 50, 239, 55, Blue);
+	LCD_DrawMapRectBorders(0, 265, 239, 270, Blue);
 	
 	// Vertical borders
-	LCD_DrawRectBorders(0, 55, 5, 110, Blue);
-	LCD_DrawRectBorders(0, 210, 5, 265, Blue);
-	LCD_DrawRectBorders(234, 55, 239, 110, Blue);
-	LCD_DrawRectBorders(234, 210, 239, 265, Blue);
+	LCD_DrawMapRectBorders(0, 55, 5, 110, Blue);
+	LCD_DrawMapRectBorders(0, 210, 5, 265, Blue);
+	LCD_DrawMapRectBorders(234, 55, 239, 110, Blue);
+	LCD_DrawMapRectBorders(234, 210, 239, 265, Blue);
 	
 	// Lateral bumps
-	LCD_DrawRectBorders(0, 110, 40, 115, Blue);
-	LCD_DrawRectBorders(35, 110, 40, 150, Blue);
-	LCD_DrawRectBorders(0, 145, 40, 150, Blue);
+	LCD_DrawMapRectBorders(0, 110, 40, 115, Blue);
+	LCD_DrawMapRectBorders(35, 110, 40, 150, Blue);
+	LCD_DrawMapRectBorders(0, 145, 40, 150, Blue);
+	LCD_DrawMapRectBorders(0, 115, 35, 145, Blue);
 	
-	LCD_DrawRectBorders(0, 170, 40, 175, Blue);
-	LCD_DrawRectBorders(35, 170, 40, 210, Blue);
-	LCD_DrawRectBorders(0, 205, 40, 210, Blue);
+	LCD_DrawMapRectBorders(0, 170, 40, 175, Blue);
+	LCD_DrawMapRectBorders(35, 170, 40, 210, Blue);
+	LCD_DrawMapRectBorders(0, 205, 40, 210, Blue);
+	LCD_DrawMapRectBorders(0, 175, 35, 205, Blue);
 	
-	LCD_DrawRectBorders(200, 110, 239, 115, Blue);
-	LCD_DrawRectBorders(200, 110, 205, 150, Blue);
-	LCD_DrawRectBorders(200, 145, 239, 150, Blue);
+	LCD_DrawMapRectBorders(200, 110, 239, 115, Blue);
+	LCD_DrawMapRectBorders(200, 110, 205, 150, Blue);
+	LCD_DrawMapRectBorders(200, 145, 239, 150, Blue);
+	LCD_DrawMapRectBorders(205, 115, 239, 145, Blue);
 	
-	LCD_DrawRectBorders(200, 170, 239, 175, Blue);
-	LCD_DrawRectBorders(200, 170, 205, 210, Blue);
-	LCD_DrawRectBorders(200, 205, 239, 210, Blue);
+	LCD_DrawMapRectBorders(200, 170, 239, 175, Blue);
+	LCD_DrawMapRectBorders(200, 170, 205, 210, Blue);
+	LCD_DrawMapRectBorders(200, 205, 239, 210, Blue);
+	LCD_DrawMapRectBorders(200, 175, 239, 205, Blue);
 	
 	// Center Rectangle
-	LCD_DrawRectBorders(80, 140, 160, 180, Blue);
+	LCD_DrawMapRectBorders(80, 140, 160, 180, Blue);
 	
 	// Top Rectangles
-	LCD_DrawRectBorders(115, 55, 125, 90, Blue);
+	LCD_DrawMapRectBorders(115, 55, 125, 90, Blue);
 	
-	LCD_DrawRectBorders(40, 75, 55, 90, Blue);
-	LCD_DrawRectBorders(75, 75, 90, 110, Blue);
+	LCD_DrawMapRectBorders(35, 75, 50, 90, Blue);
+	LCD_DrawMapRectBorders(75, 75, 90, 110, Blue);
 	
-	LCD_DrawRectBorders(150, 75, 210, 85, Blue);
-	LCD_DrawRectBorders(120, 110, 175, 120, Blue);
+	LCD_DrawMapRectBorders(150, 75, 210, 85, Blue);
+	LCD_DrawMapRectBorders(120, 110, 175, 120, Blue);
 	
 	// Bottom Rectangles
-	LCD_DrawRectBorders(30, 230, 110, 240, Blue);
-	LCD_DrawRectBorders(80, 200, 110, 240, Blue);
+	LCD_DrawMapRectBorders(30, 230, 110, 240, Blue);
+	LCD_DrawMapRectBorders(80, 200, 110, 240, Blue);
 	
-	LCD_DrawRectBorders(130, 230, 210, 240, Blue);
-	LCD_DrawRectBorders(130, 200, 160, 240, Blue);
+	LCD_DrawMapRectBorders(130, 230, 210, 240, Blue);
+	LCD_DrawMapRectBorders(130, 200, 160, 240, Blue);
 }
 
 /******************************************************************************
