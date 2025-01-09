@@ -611,7 +611,7 @@ void LCD_DrawRect( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 * Attention		 : None
 *******************************************************************************/
 void LCD_DrawMap(void) {
-	
+	LCD_DrawRect(10, 50, 230, 270, Blue);
 }
 
 /******************************************************************************
@@ -623,8 +623,8 @@ void LCD_DrawMap(void) {
 void LCD_DrawTime(short int time) {
   char timeString[4];
 	sprintf(timeString, "%02hds", time);
-	GUI_Text(20, 20, (uint8_t *) "Game Over in", White, Black);
-	GUI_Text(60, 40, (uint8_t *) timeString, White, Black);
+	GUI_Text(20, 10, (uint8_t *) "Game Over in", White, Black);
+	GUI_Text(60, 30, (uint8_t *) timeString, White, Black);
 }
 /******************************************************************************
 * Function Name  : LCD_DrawScore
@@ -635,8 +635,8 @@ void LCD_DrawTime(short int time) {
 void LCD_DrawScore(short int score) {
 	char scoreString[6];
 	sprintf(scoreString, "%05hd", score);
-	GUI_Text(160, 20, (uint8_t *) "SCORE", White, Black);
-	GUI_Text(158, 40, (uint8_t *) scoreString, White, Black);
+	GUI_Text(160, 10, (uint8_t *) "SCORE", White, Black);
+	GUI_Text(158, 30, (uint8_t *) scoreString, White, Black);
 }
 
 /******************************************************************************
@@ -649,7 +649,26 @@ void LCD_DrawGameOver (void) {
 	GUI_Text(80, 150, (uint8_t *) "GAME OVER", White, Black);
 }
 void LCD_DrawWinMessage (void) {
-	GUI_Text(80, 150, (uint8_t *) "VICTORY!", White, Black);
+	GUI_Text(88, 150, (uint8_t *) "VICTORY!", White, Black);
+}
+void LCD_DrawPauseMessage (void) {
+	GUI_Text(96, 150, (uint8_t *) "PAUSED", White, Black);
+}
+
+/******************************************************************************
+* Function Name  : LCD_DrawImage
+* Output         : None
+* Return         : None
+* Attention		 : None
+*******************************************************************************/
+void LCD_DrawImage(int startX, int startY, int size, uint16_t* imagePixels){	
+	int i,j;
+	for(i=0; i<size; i++){
+		for(j=0; j<size; j++){
+			uint16_t PixelColorImDrawing = imagePixels[j*size + i];
+			LCD_SetPoint(startX+i, startY+j, PixelColorImDrawing);
+		}
+	}
 }
 
 /******************************************************************************

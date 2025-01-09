@@ -100,6 +100,8 @@ void LCD_DrawTime( short int time );
 void LCD_DrawScore( short int score );
 void LCD_DrawGameOver(void);
 void LCD_DrawWinMessage(void);
+void LCD_DrawPauseMessage(void);
+void LCD_DrawImage(int startX, int startY, int size, uint16_t* imagePixels);
 
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
