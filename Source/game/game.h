@@ -21,6 +21,7 @@ typedef struct {
 		short int positionX;		 // X coordinate in the map
 	  short int positionY;     // Y coordinate in the map
 	  short int direction;
+		short int frameEven;
 } Game;
 
 void GameInit(void);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "./game.h"
+#include "../timer/timer.h"
 #include "../GLCD//GLCD.h"
 #include "RIT/RIT.h"
 
@@ -100,6 +101,7 @@ void GeneratePowerPills() {
 					ok = 0;
 		}
 	}
+	disable_timer(2);
 	
 	for (i=0; i<44; i++) {
 		for (j=0; j<48; j++) {
@@ -138,10 +140,11 @@ void GameInit(void) {
   GameVar->score = 0;                          // Initial score is 0
   GameVar->lives = 1;                          // Initial number of lives is 1
 	GameVar->pills = 240; 										   // Initial number of pills is 240
-  GameVar->time = 25;                          // Start with 60s remaining
-	GameVar->positionX = 24;
-	GameVar->positionY = 28;
+  GameVar->time = 60;                          // Start with 60s remaining
+	GameVar->positionX = 23;
+	GameVar->positionY = 26;
 	GameVar->direction = 0;
+	GameVar->frameEven = 0;
 }
 
 void TogglePause() {
@@ -161,13 +164,15 @@ void UpdateSeconds() {
 	
 	switch (GameVar->currentState) {
 		case GAME_STATE_START:
+			LCD_DrawTimeLabel();
 			LCD_DrawTime(GameVar->time);
+			LCD_DrawScoreLabel();
 			LCD_DrawScore(GameVar->score);
 			LCD_DrawMap();
 			LCD_DrawImage(20, 280, 30, lifePixels);
 			GeneratePowerPills();
 		  DrawPills();
-			LCD_DrawCharacter(GameVar->positionX, GameVar->positionY, GameVar->direction);
+			LCD_DrawCharacter(GameVar->positionX, GameVar->positionY, GameVar->direction, GameVar->frameEven);
 			enable_RIT();
 			GameVar->currentState = GAME_STATE_PAUSED;
 		  break;
@@ -200,52 +205,82 @@ void UpdateSeconds() {
 }
 
 void UpdateFrames() {
+	int i=0;
+	GameVar->frameEven = GameVar->frameEven-1;
+	
 	if (GameVar->currentState == GAME_STATE_PLAYING) {
 		switch(GameVar->direction) {
 			case 0:
-				if (map[GameVar->positionY-1][GameVar->positionX] != 1) {
-					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+				if (
+					map[GameVar->positionY-1][GameVar->positionX] != 1 &&
+				  map[GameVar->positionY-1][GameVar->positionX+1] != 1 &&
+				  map[GameVar->positionY-1][GameVar->positionX+2] != 1
+				) {
+					LCD_ClearCharacter(GameVar->positionX, GameVar->positionY);
 					GameVar->positionY -= 1;
 				}
 				break;
 			case 1:
 				if (GameVar->positionX==47) {
-					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					LCD_ClearCharacter(GameVar->positionX, GameVar->positionY);
 					GameVar->positionX = 0;
-				} else if (map[GameVar->positionY][GameVar->positionX+1] != 1) {
-					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+				} else if (
+					map[GameVar->positionY][GameVar->positionX+3] != 1 &&
+				  map[GameVar->positionY+1][GameVar->positionX+3] != 1 &&
+				  map[GameVar->positionY+2][GameVar->positionX+3] != 1
+				) {
+					LCD_ClearCharacter(GameVar->positionX, GameVar->positionY);
 					GameVar->positionX += 1;
 				}
 				break;
 			case 2:
-				if (map[GameVar->positionY+1][GameVar->positionX] != 1) {
-					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+				if (
+					map[GameVar->positionY+3][GameVar->positionX] != 1 &&
+				  map[GameVar->positionY+3][GameVar->positionX+1] != 1 &&
+				  map[GameVar->positionY+3][GameVar->positionX+2] != 1
+				) {
+					LCD_ClearCharacter(GameVar->positionX, GameVar->positionY);
 					GameVar->positionY += 1;
 				}
 				break;
 			case 3:
 				if (GameVar->positionX==0) {
-					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+					LCD_ClearCharacter(GameVar->positionX, GameVar->positionY);
 					GameVar->positionX = 47;
-				} else if (map[GameVar->positionY][GameVar->positionX-1] != 1) {
-					LCD_DrawRect(GameVar->positionX*5, 50+GameVar->positionY*5, GameVar->positionX*5+4, 50+GameVar->positionY*5+4, Black);
+				} else if (
+					map[GameVar->positionY][GameVar->positionX-1] != 1 &&
+				  map[GameVar->positionY+1][GameVar->positionX-1] != 1 &&
+				  map[GameVar->positionY+2][GameVar->positionX-1] != 1
+				) {
+					LCD_ClearCharacter(GameVar->positionX, GameVar->positionY);
 					GameVar->positionX -= 1;
 				}
 				break;
 			default:
 				break;
 		}
-		LCD_DrawCharacter(GameVar->positionX, GameVar->positionY, GameVar->direction);
+		LCD_DrawCharacter(GameVar->positionX, GameVar->positionY, GameVar->direction, GameVar->frameEven);
 	
-		if (map[GameVar->positionY][GameVar->positionX] == 2) {
-			GameVar->score += 10;
-			map[GameVar->positionY][GameVar->positionX] = 0;
-		} else if (map[GameVar->positionY][GameVar->positionX] == 3) {
-			GameVar->score += 50;
-			map[GameVar->positionY][GameVar->positionX] = 0;
+		// Verifica la presenza di pills nelle 9 celle occupate da Pacman
+		for (i=0; i<9; i++) {
+			if (map[GameVar->positionY+i/3][GameVar->positionX+i%3] == 2) {
+				GameVar->score += 10;
+				GameVar->pills--;
+				map[GameVar->positionY+i/3][GameVar->positionX+i%3] = 0;
+			} else if (map[GameVar->positionY+i/3][GameVar->positionX+i%3] == 3) {
+				GameVar->score += 50;
+				GameVar->pills--;
+				map[GameVar->positionY+i/3][GameVar->positionX+i%3] = 0;
+			}
 		}
 		
-		if (GameVar->lives <3 && (GameVar->score > GameVar->lives * 100)) {
+		if (GameVar->pills == 0) {
+			LCD_DrawWinMessage();
+			GameVar->currentState = GAME_STATE_GAME_OVER;
+		}
+		
+		
+		if (GameVar->lives <3 && (GameVar->score > GameVar->lives * 1000)) {
 			GameVar->lives += 1;
 			LCD_DrawImage(20+35*(GameVar->lives-1), 280, 30, lifePixels);
 		}

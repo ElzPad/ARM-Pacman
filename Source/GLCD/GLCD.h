@@ -97,13 +97,17 @@ void LCD_DrawRect( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 void LCD_DrawMapRectBorders( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 
 void LCD_DrawMap(void);
+void LCD_DrawTimeLabel();
 void LCD_DrawTime( short int time );
+void LCD_DrawScoreLabel();
 void LCD_DrawScore( short int score );
 void LCD_DrawGameOver(void);
 void LCD_DrawWinMessage(void);
 void LCD_DrawPauseMessage(void);
 void LCD_ClearMessage (void);
 void LCD_DrawImage(int startX, int startY, int size, uint16_t* imagePixels);
+void LCD_DrawCharacter(int positionX, int positionY, short int direction, short int alt);
+void LCD_ClearCharacter(int positionX, int positionY);
 
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
