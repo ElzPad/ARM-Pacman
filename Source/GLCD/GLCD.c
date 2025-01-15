@@ -659,8 +659,8 @@ void LCD_DrawMap(void) {
 	// Vertical borders
 	LCD_DrawMapRectBorders(0, 55, 4, 109, Blue);
 	LCD_DrawMapRectBorders(0, 210, 4, 264, Blue);
-	LCD_DrawMapRectBorders(234, 55, 239, 109, Blue);
-	LCD_DrawMapRectBorders(234, 210, 239, 264, Blue);
+	LCD_DrawMapRectBorders(235, 55, 239, 109, Blue);
+	LCD_DrawMapRectBorders(235, 210, 239, 264, Blue);
 	
 	// Lateral bumps
 	LCD_DrawMapRectBorders(0, 110, 39, 114, Blue);
@@ -687,7 +687,7 @@ void LCD_DrawMap(void) {
 	LCD_DrawMapRectBorders(80, 140, 159, 179, Blue);
 	
 	// Top Rectangles
-	LCD_DrawMapRectBorders(115, 55, 125, 90, Blue);
+	LCD_DrawMapRectBorders(115, 55, 124, 89, Blue);
 	
 	LCD_DrawMapRectBorders(35, 75, 49, 89, Blue);
 	LCD_DrawMapRectBorders(75, 75, 89, 109, Blue);

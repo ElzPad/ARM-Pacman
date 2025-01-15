@@ -88,26 +88,25 @@ volatile uint8_t map[44][48] = {
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
 };
 
-void GeneratePowerPills() {
-	int i=0, j=0, ok, positions[6], count=0;
-	
+void GeneratePowerTimes() {
+	int i=0;
+	short int time;
 	for (i=0; i<6; i++) {
-		ok = 0;
-		while (!ok) {
-			positions[i] = (LPC_TIM0->TC & (LPC_TIM1->TC ^ 0x543)) % (240);
-			ok = 1;
-			for (j=0; j<i; j++)
-				if (positions[i] == positions[j])
-					ok = 0;
-		}
+		time = ((LPC_TIM0->TC & 0xAAAA) ^ (LPC_TIM1->TC & 0x5555)) % (60);
+		GameVar->powerTimes[i] = time;
 	}
-	disable_timer(2);
+}
+
+void GeneratePowerPill() {
+	int i=0, j=0, position, count=0;
 	
+	position = (LPC_TIM0->TC & (LPC_TIM1->TC)) % (GameVar->pills);
 	for (i=0; i<44; i++) {
 		for (j=0; j<48; j++) {
 			if (map[i][j] == 2) {
-				if (count==positions[0] || count==positions[1] || count==positions[2] || count==positions[3] || count==positions[4] || count==positions[5]) {
+				if (count==position) {
 					map[i][j] = 3;
+					LCD_DrawRect(j*5, 50+i*5, j*5+4, 50+i*5+4, Red);
 				}
 				count++;
 			}
@@ -122,7 +121,7 @@ void DrawPills() {
 	for (i=0; i<44; i++) {
 		for (j=0; j<48; j++) {
 			if (map[i][j] == 2)
-				LCD_DrawRect(j*5+1, 50+i*5+1, j*5+3, 50+i*5+3, Green);
+				LCD_DrawRect(j*5+1, 50+i*5+1, j*5+2, 50+i*5+2, Green);
 			else if (map[i][j] == 3)
 				LCD_DrawRect(j*5, 50+i*5, j*5+4, 50+i*5+4, Red);
 		}
@@ -156,7 +155,9 @@ void TogglePause() {
 }
 
 void SetDirection(short int direction) {
-	GameVar->direction = direction;
+	if (GameVar->currentState == GAME_STATE_PLAYING) {
+		GameVar->direction = direction;
+	}
 }
 
 void UpdateSeconds() {
@@ -170,7 +171,7 @@ void UpdateSeconds() {
 			LCD_DrawScore(GameVar->score);
 			LCD_DrawMap();
 			LCD_DrawImage(20, 280, 30, lifePixels);
-			GeneratePowerPills();
+			GeneratePowerTimes();
 		  DrawPills();
 			LCD_DrawCharacter(GameVar->positionX, GameVar->positionY, GameVar->direction, GameVar->frameEven);
 			enable_RIT();
@@ -181,6 +182,13 @@ void UpdateSeconds() {
 			GameVar->time = GameVar->time >= 1 ? GameVar->time-1 : 0;
 			LCD_DrawTime(GameVar->time);
 		  LCD_DrawScore(GameVar->score);
+		
+			for (i=0; i<6; i++) {
+				if (GameVar->time == GameVar->powerTimes[i]) {
+					GeneratePowerPill();
+				}
+			}
+			
 			if (GameVar->time == 0) {
 				if (GameVar->pills > 0)
 					LCD_DrawGameOver();
@@ -285,8 +293,4 @@ void UpdateFrames() {
 			LCD_DrawImage(20+35*(GameVar->lives-1), 280, 30, lifePixels);
 		}
 	}
-}
-
-void Draw() {
-	
 }

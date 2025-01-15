@@ -17,6 +17,7 @@ typedef struct {
     short int score;         // Player's current score
     short int lives;         // Remaining lives
 	  short int pills;				 // Remaining pills
+		short int powerTimes[6]; // Time of appearance of power pills
     short int time;          // Remaining time
 		short int positionX;		 // X coordinate in the map
 	  short int positionY;     // Y coordinate in the map

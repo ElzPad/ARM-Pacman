@@ -428,26 +428,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>led</GroupName>
-          <Files>
-            <File>
-              <FileName>funct_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\led\funct_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Source\led\led.h</FilePath>
-            </File>
-            <File>
-              <FileName>lib_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\led\lib_led.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>timer</GroupName>
           <Files>
             <File>
@@ -676,6 +656,26 @@
               <FileName>TouchPanel.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Source\TouchPanel\TouchPanel.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>led</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\funct_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\led\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>lib_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\lib_led.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1136,26 +1136,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>led</GroupName>
-          <Files>
-            <File>
-              <FileName>funct_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\led\funct_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Source\led\led.h</FilePath>
-            </File>
-            <File>
-              <FileName>lib_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\led\lib_led.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>timer</GroupName>
           <Files>
             <File>
@@ -1333,6 +1313,26 @@
               <FileName>TouchPanel.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Source\TouchPanel\TouchPanel.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>led</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\funct_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\led\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>lib_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\led\lib_led.c</FilePath>
             </File>
           </Files>
         </Group>
