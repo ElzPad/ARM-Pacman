@@ -10,7 +10,6 @@
 #include "LPC17xx.h"
 #include "RIT.h"
 #include "../game/game.h"
-#include "../led/led.h"
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler

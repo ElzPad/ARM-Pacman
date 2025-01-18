@@ -23,7 +23,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "LPC17xx.h"
 #include "GLCD/GLCD.h" 
-#include "TouchPanel/TouchPanel.h"
 #include "game/game.h"
 #include "timer/timer.h"
 #include "RIT/RIT.h"
@@ -41,8 +40,6 @@ int main(void)
 	NVIC_SetPriority(TIMER0_IRQn, 2);
 	
 	LCD_Initialization();
-  TP_Init();
-	// TouchPanel_Calibrate();
 	LCD_Clear(Black);
 	
 	init_RIT(0x0AC4B40);

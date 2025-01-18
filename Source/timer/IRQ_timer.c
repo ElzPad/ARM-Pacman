@@ -10,7 +10,6 @@
 #include "LPC17xx.h"
 #include "timer.h"
 #include "../game//game.h"
-#include "../led/led.h"
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -32,7 +31,6 @@ void TIMER0_IRQHandler (void)
 		LPC_TIM0->IR = 1;			// clear interrupt flag
 	}
 	else if (LPC_TIM0->IR & 2) {
-		LED_Out(ledVal);
 		LPC_TIM0->IR = 2;
 	}
 	else if (LPC_TIM0->IR & 4) {
@@ -57,11 +55,9 @@ void TIMER0_IRQHandler (void)
 void TIMER1_IRQHandler (void)
 {
 	if (LPC_TIM1->IR & 1) {
-		LED_Out(0);
 		LPC_TIM1->IR = 1;			// clear interrupt flag
 	}
 	else if (LPC_TIM1->IR & 2) {
-		LED_Out(ledVal);
 		LPC_TIM1->IR = 2;
 	}
 	else if (LPC_TIM1->IR & 4) {
@@ -84,7 +80,6 @@ void TIMER1_IRQHandler (void)
 ******************************************************************************/
 void TIMER2_IRQHandler (void)
 {
-	LED_Out(0);
 	disable_timer(1);
   LPC_TIM2->IR = 1;			/* clear interrupt flag */
   return;
@@ -101,7 +96,6 @@ void TIMER2_IRQHandler (void)
 ******************************************************************************/
 void TIMER3_IRQHandler (void)
 {
-	LED_Out(5);
   LPC_TIM3->IR = 1;			/* clear interrupt flag */
   return;
 }
