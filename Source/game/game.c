@@ -230,7 +230,7 @@ void UpdateSeconds() {
 					LPC_TIM1->MR0 = 0x09C4B40;
 					break;
 				case 15:
-					LPC_TIM2->MR0 = 0x07C4B40;
+					LPC_TIM1->MR0 = 0x07C4B40;
 					break;
 				default:
 					break;

@@ -48,9 +48,6 @@ int main(void)
 	init_timer(0, 0, 0, 3, 0x17D7840);
 	init_timer(1, 0, 0, 3, 0x0BC4B40);
 	
-	init_timer(2, 0, 0, 3, 0xBC4B40);
-	init_timer(3, 0, 0, 3, 0xBC4B40);	
-	
 	GameInit();
 	BUTTON_init();												/* BUTTON Initialization              */
 	

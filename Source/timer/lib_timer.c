@@ -141,7 +141,7 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t Prescaler, uint8_t MatchReg, u
 		LPC_TIM1->MCR |= SRImatchReg << 3*MatchReg;
 		
 		NVIC_EnableIRQ(TIMER1_IRQn);				/* enable timer interrupts */
-		NVIC_SetPriority(TIMER1_IRQn, 0);		/* more priority than buttons */
+		NVIC_SetPriority(TIMER1_IRQn, 1);		/* more priority than buttons */
 		return (0);
   }
 	else if ( timer_num == 2 ) {
@@ -163,7 +163,7 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t Prescaler, uint8_t MatchReg, u
 		LPC_TIM2->MCR |= SRImatchReg << 3*MatchReg;
 		
 		NVIC_EnableIRQ(TIMER2_IRQn);				/* enable timer interrupts */
-		NVIC_SetPriority(TIMER2_IRQn, 0);		/* more priority than buttons */
+		NVIC_SetPriority(TIMER2_IRQn, 1);		/* more priority than buttons */
 		return (0);
   }
 	else if ( timer_num == 3 ) {
@@ -185,7 +185,7 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t Prescaler, uint8_t MatchReg, u
 		LPC_TIM3->MCR |= SRImatchReg << 3*MatchReg;
 		
 		NVIC_EnableIRQ(TIMER3_IRQn);				/* enable timer interrupts */
-		NVIC_SetPriority(TIMER3_IRQn, 0);		/* more priority than buttons */
+		NVIC_SetPriority(TIMER3_IRQn, 1);		/* more priority than buttons */
 		return (0);
   }
   return (0);

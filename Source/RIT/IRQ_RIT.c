@@ -10,7 +10,67 @@
 #include "LPC17xx.h"
 #include "RIT.h"
 #include "../game/game.h"
+#include "../music/music.h"
 
+#define RIT_SEMIMINIMA 8
+#define RIT_MINIMA 16
+#define RIT_INTERA 32
+
+#define UPTICKS 1
+
+NOTE song[] = 
+{
+	{a3, time_semiminima},
+	{a3, time_semiminima},
+	{a3, time_semiminima},
+	{f3, time_croma*1.5},
+	{c4, time_semicroma},
+	{a3, time_semiminima},
+	{f3, time_croma*1.5},
+	{c4, time_semicroma},
+	{a3, time_semiminima},
+	
+	{e4, time_semiminima},
+	{e4, time_semiminima},
+	{e4, time_semiminima},
+	{f4, time_croma*1.5},
+	{c4, time_semicroma},
+	{a3b, time_semiminima},
+	{f3, time_croma*1.5},
+	{c4, time_semicroma},
+	{a3, time_semibreve},
+	
+	{a4, time_semiminima},
+	{a3, time_croma*1.5},
+	{a3, time_semicroma},
+	{a4, time_semiminima},
+	{a4b, time_croma},
+	{g4, time_semicroma},
+	{g4b, time_semicroma},
+	{f4, time_semicroma},
+	{g4b, time_croma},
+	
+	{pause, time_croma},
+	{b3b, time_croma},
+	{e4b, time_semiminima},
+	{d4, time_croma*1.5},
+	{d4b, time_semicroma},
+	{c4, time_semicroma},
+	{b3, time_semicroma},
+	{c4, time_croma},
+	
+	{pause, time_croma},
+	{f3, time_croma},
+	{a3b, time_semiminima},
+	{f3, time_croma*1.5},
+	{a3, time_semicroma},
+	{c4, time_semiminima},
+	{a3, time_croma*1.5},
+	{c4, time_semicroma},
+	{e4, time_semibreve},
+	
+	{pause, time_semibreve},
+};
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
 **
@@ -39,6 +99,9 @@ void RIT_IRQHandler (void)
 	static int j_down = 0;
 	static int j_left = 0;
 	static int j_right = 0;
+	
+	static int currentNote = 0;
+	static int ticks = 0;
 	
 	UpdateCharacter();
 	
@@ -120,6 +183,19 @@ void RIT_IRQHandler (void)
 			LPC_PINCON->PINSEL4    |= (1 << 20);     /* External interrupt 0 pin selection */
 		}
 	} // end INT0
+	
+	if(!isNotePlaying() && GameIsPlaying())
+	{
+		++ticks;
+		if(ticks == UPTICKS) {
+			ticks = 0;
+			playNote(song[currentNote++]);
+		}
+	}
+	
+	if(currentNote == (sizeof(song) / sizeof(song[0]))) {
+		currentNote = 0;
+	}
 	
   reset_RIT();
 	LPC_RIT->RICTRL |= 0x1;	/* clear interrupt flag */
