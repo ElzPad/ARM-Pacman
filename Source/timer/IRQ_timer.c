@@ -7,8 +7,10 @@
 ** Correlated files:    timer.h
 **--------------------------------------------------------------------------------------------------------
 *********************************************************************************************************/
+#include <string.h>
 #include "LPC17xx.h"
 #include "timer.h"
+#include "../GLCD/GLCD.h"
 #include "../game//game.h"
 
 /******************************************************************************
@@ -54,18 +56,11 @@ void TIMER0_IRQHandler (void)
 ******************************************************************************/
 void TIMER1_IRQHandler (void)
 {
-	if (LPC_TIM1->IR & 1) {
-		LPC_TIM1->IR = 1;			// clear interrupt flag
-	}
-	else if (LPC_TIM1->IR & 2) {
-		LPC_TIM1->IR = 2;
-	}
-	else if (LPC_TIM1->IR & 4) {
-		LPC_TIM1->IR = 4;
-	}
-	else if (LPC_TIM1->IR & 8) {
-		LPC_TIM1->IR = 8;
-	}
+	static counter = 10;
+	if (GameIsPlaying())
+		UpdateGhost();
+	
+  LPC_TIM1->IR = 1;			/* clear interrupt flag */
   return;
 }
 
@@ -80,9 +75,18 @@ void TIMER1_IRQHandler (void)
 ******************************************************************************/
 void TIMER2_IRQHandler (void)
 {
-	UpdateGhost();
-	
-  LPC_TIM2->IR = 1;			/* clear interrupt flag */
+	if (LPC_TIM2->IR & 1) {
+		LPC_TIM2->IR = 1;			// clear interrupt flag
+	}
+	else if (LPC_TIM2->IR & 2) {
+		LPC_TIM2->IR = 2;
+	}
+	else if (LPC_TIM2->IR & 4) {
+		LPC_TIM2->IR = 4;
+	}
+	else if (LPC_TIM2->IR & 8) {
+		LPC_TIM2->IR = 8;
+	}
   return;
 }
 

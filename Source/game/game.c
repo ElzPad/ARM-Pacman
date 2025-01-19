@@ -11,7 +11,6 @@
 
 #define ROWS 44
 #define COLS 48
-#define INF 999999
 
 Point getNextGhostStep(Point start, Point goal, short int ghostMode);
 
@@ -168,6 +167,10 @@ void GameInit(void) {
 	GameVar->frameEven = 0;
 }
 
+int GameIsPlaying() {
+	return GameVar->currentState == GAME_STATE_PLAYING;
+}
+
 void TogglePause() {
 	if (GameVar->currentState == GAME_STATE_PAUSED) {
 		GameVar->currentState = GAME_STATE_RESUMED;
@@ -195,7 +198,6 @@ void verifyIfEaten() {
 			  LCD_ClearCharacter(GameVar->ghostPosition);
 			  GameVar->ghostMode = 2;
 		}
-		
   }
 }
 
@@ -220,6 +222,19 @@ void UpdateSeconds() {
 		
 		case GAME_STATE_PLAYING:
 			GameVar->time = GameVar->time >= 1 ? GameVar->time-1 : 0;
+		  switch (GameVar->time) {
+				case 45:
+					LPC_TIM1->MR0 = 0x0AC4B40;
+					break;
+			  case 30:
+					LPC_TIM1->MR0 = 0x09C4B40;
+					break;
+				case 15:
+					LPC_TIM2->MR0 = 0x07C4B40;
+					break;
+				default:
+					break;
+			}
 			LCD_DrawTime(GameVar->time);
 		  LCD_DrawScore(GameVar->score);
 		

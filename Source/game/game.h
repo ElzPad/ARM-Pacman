@@ -35,6 +35,7 @@ typedef struct {
 } Game;
 
 void GameInit(void);
+int GameIsPlaying(void);
 void TogglePause(void);
 void SetDirection(short int direction);
 void UpdateSeconds(void);
