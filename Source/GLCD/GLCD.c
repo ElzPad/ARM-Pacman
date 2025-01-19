@@ -719,8 +719,9 @@ void LCD_DrawMap(void) {
 	
 	// Center Rectangle
 	LCD_DrawMapRectBorders(80, 140, 159, 179, Blue);
-	LCD_DrawMapRectBorders(85, 145, 154, 174, Blue);
+	LCD_DrawMapRectBorders(84, 144, 155, 175, Blue);
 	LCD_DrawRect(110, 140, 129, 145, Pink);
+	LCD_DrawRect(110, 175, 129, 179, Pink);
 	
 	// Top Rectangles
 	LCD_DrawMapRectBorders(115, 55, 124, 89, Blue);

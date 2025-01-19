@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
 #include <limits.h>
 
@@ -12,7 +13,7 @@
 #define COLS 48
 #define INF 999999
 
-Point getNextGhostStep(Point start, Point goal);
+Point getNextGhostStep(Point start, Point goal, short int ghostMode);
 
 static Game *GameVar = NULL;
 
@@ -69,13 +70,13 @@ volatile uint8_t map[ROWS][COLS] = {
 	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
 	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
 	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
-	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-	{0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0,},
-	{2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 0, 0, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 2,},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 2, 0, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 0, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
-	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
+	{0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0,},
+	{2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 2,},
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
+	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
 	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
 	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
 	{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
@@ -140,13 +141,13 @@ void DrawPills() {
 
 void resetPacmanPosition() {
 	GameVar->position.x = 22;
-	GameVar->position.y = 26;
+	GameVar->position.y = 40;
 	GameVar->direction = 0;
 }
 
 void resetGhostPosition() {
 	GameVar->ghostPosition.x = 22;
-	GameVar->ghostPosition.y = 40;
+	GameVar->ghostPosition.y = 21;
 }
 
 void GameInit(void) {
@@ -207,8 +208,6 @@ void UpdateSeconds() {
 			LCD_DrawTime(GameVar->time);
 			LCD_DrawScoreLabel();
 			LCD_DrawScore(GameVar->score);
-			map[GameVar->position.y][GameVar->position.x] = 11;
-		  map[GameVar->ghostPosition.y][GameVar->ghostPosition.x] = 12;
 			LCD_DrawMap();
 			LCD_DrawImage((Point){20, 280}, 30, lifePixels);
 			GeneratePowerTimes();
@@ -265,8 +264,9 @@ void UpdateSeconds() {
 		case GAME_STATE_RESUMED:
 			LCD_ClearMessage();
 		
-   		LCD_DrawMapRectBorders(85, 145, 154, 174, Blue);
+		  LCD_DrawMapRectBorders(84, 144, 155, 175, Blue);
     	LCD_DrawRect(110, 140, 129, 145, Pink);
+    	LCD_DrawRect(110, 175, 129, 179, Pink);
 		
    		LCD_DrawGhost(GameVar->ghostPosition, 0);
 			GameVar->currentState = GAME_STATE_PLAYING;
@@ -303,7 +303,10 @@ void UpdateCharacter() {
 				if (
 					map[GameVar->position.y-1][GameVar->position.x] != 1 &&
 				  map[GameVar->position.y-1][GameVar->position.x+1] != 1 &&
-				  map[GameVar->position.y-1][GameVar->position.x+2] != 1
+				  map[GameVar->position.y-1][GameVar->position.x+2] != 1 &&
+				map[GameVar->position.y-1][GameVar->position.x] != 4 &&
+				  map[GameVar->position.y-1][GameVar->position.x+1] != 4 &&
+				  map[GameVar->position.y-1][GameVar->position.x+2] != 4
 				) {
 					LCD_ClearCharacter(GameVar->position);
 					GameVar->position.y -= 1;
@@ -316,7 +319,10 @@ void UpdateCharacter() {
 				} else if (
 					map[GameVar->position.y][GameVar->position.x+3] != 1 &&
 				  map[GameVar->position.y+1][GameVar->position.x+3] != 1 &&
-				  map[GameVar->position.y+2][GameVar->position.x+3] != 1
+				  map[GameVar->position.y+2][GameVar->position.x+3] != 1 &&
+			   	map[GameVar->position.y][GameVar->position.x+3] != 4 &&
+				  map[GameVar->position.y+1][GameVar->position.x+3] != 4 &&
+				  map[GameVar->position.y+2][GameVar->position.x+3] != 4
 				) {
 					LCD_ClearCharacter(GameVar->position);
 					GameVar->position.x += 1;
@@ -326,7 +332,10 @@ void UpdateCharacter() {
 				if (
 					map[GameVar->position.y+3][GameVar->position.x] != 1 &&
 				  map[GameVar->position.y+3][GameVar->position.x+1] != 1 &&
-				  map[GameVar->position.y+3][GameVar->position.x+2] != 1
+				  map[GameVar->position.y+3][GameVar->position.x+2] != 1 &&
+				  map[GameVar->position.y+3][GameVar->position.x] != 4 &&
+				  map[GameVar->position.y+3][GameVar->position.x+1] != 4 &&
+				  map[GameVar->position.y+3][GameVar->position.x+2] != 4
 				) {
 					LCD_ClearCharacter(GameVar->position);
 					GameVar->position.y += 1;
@@ -339,7 +348,10 @@ void UpdateCharacter() {
 				} else if (
 					map[GameVar->position.y][GameVar->position.x-1] != 1 &&
 				  map[GameVar->position.y+1][GameVar->position.x-1] != 1 &&
-				  map[GameVar->position.y+2][GameVar->position.x-1] != 1
+				  map[GameVar->position.y+2][GameVar->position.x-1] != 1 &&
+				  map[GameVar->position.y][GameVar->position.x-1] != 4 &&
+				  map[GameVar->position.y+1][GameVar->position.x-1] != 4 &&
+				  map[GameVar->position.y+2][GameVar->position.x-1] != 4
 				) {
 					LCD_ClearCharacter(GameVar->position);
 					GameVar->position.x -= 1;
@@ -380,9 +392,32 @@ void UpdateCharacter() {
 
 void UpdateGhost() {
 	Point res;
+	short int i=0, j=0;
 	if (GameVar->currentState==GAME_STATE_PLAYING && GameVar->ghostMode!=2) {
-		LCD_ClearCharacter(GameVar->ghostPosition);
-		res = getNextGhostStep(GameVar->ghostPosition, GameVar->position);
+		for (i=GameVar->ghostPosition.y; i<GameVar->ghostPosition.y+3; i++) {
+			for (j=GameVar->ghostPosition.x; j<GameVar->ghostPosition.x+3; j++) {
+				if (i>0 && i<ROWS && j>0 && j<COLS) {
+					switch(map[i][j]) {
+						case 0:
+							LCD_DrawRect(j*5, 50+i*5, j*5+4, 50+i*5+4, Black);
+							break;
+						case 2:
+							LCD_DrawRect(j*5, 50+i*5, j*5+4, 50+i*5+4, Black);
+							LCD_DrawRect(j*5+1, 50+i*5+1, j*5+2, 50+i*5+2, Green);
+							break;
+						case 3:
+							LCD_DrawRect(j*5, 50+i*5, j*5+4, 50+i*5+4, Red);
+							break;
+						case 4:
+							LCD_DrawRect(j*5, 50+i*5, j*5+4, 50+i*5+4, Pink);
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
+		res = getNextGhostStep(GameVar->ghostPosition, GameVar->position, GameVar->ghostMode);
 		if (res.x!=-1 && res.y!=-1)
 			GameVar->ghostPosition = res;
 		LCD_DrawGhost(GameVar->ghostPosition, GameVar->ghostMode);
@@ -391,14 +426,19 @@ void UpdateGhost() {
 	}
 }
 
-// Heuristic: Manhattan distance to the goal
 int manhattanDistance(Point current, Point goal) {
-    return abs(current.x - goal.x) + abs(current.y - goal.y);
+  return abs(current.x - goal.x) + abs(current.y - goal.y);
+}
+int diagonalDistance(Point current, Point goal) {
+	if (abs(current.x - goal.x) > abs(current.y - goal.y)) {
+		return abs(current.x - goal.x);
+	} else {
+		return abs(current.y - goal.y);
+	}
 }
 
-// Check if the position is within bounds and not a wall
-int isValid(uint8_t visited[][COLS], Point pos) {
-	if (pos.y<0 || pos.y>=ROWS || pos.x<0 || pos.y<=COLS || visited[pos.y][pos.x]) {
+int isValid(Point pos) {
+	if (pos.y<0 || pos.y>=ROWS || pos.x<0 || pos.y>=COLS) {
 		return 0;
 	}
 	
@@ -415,47 +455,22 @@ int isValid(uint8_t visited[][COLS], Point pos) {
 	return res;
 }
 
-// Greedy approach to find the next step towards the goal
-Point getNextGhostStep(Point start, Point goal) {
-	return start;
-	/*int k=0;
-  uint8_t visited[ROWS][COLS] = {0};
-	int rowDir[] = {-1, 1, 0, 0};
-	int colDir[] = {0, 0, -1, 1};
-    
-  // Start from the initial position
-  Point current = start;
-  visited[current.y][current.x] = 1;
-    
-  while (1) {
-    // If the current position is the goal, we stop
-    if (current.x == goal.x && current.y == goal.y) {
-      return current; // Goal reached
-    }
-
-    // Explore neighbors and select the one with the smallest Manhattan distance
-    Point nextStep = {-1, -1}; // Invalid position to indicate no valid step
-    int minDistance = INT_MAX;  // Start with a large value
-
-    for (k = 0; k < 4; k++) {
-      Point neighbor = {current.y + rowDir[k], current.x + colDir[k]};
-      if (isValid(visited, neighbor)) {
-        int dist = manhattanDistance(neighbor, goal);
-        if (dist < minDistance) {
-          minDistance = dist;
-          nextStep = neighbor;
-        }
-      }
-    }
-
-    // If no valid next step, return an invalid position (no path found)
-    if (nextStep.x == -1 && nextStep.y == -1) {
-      return nextStep;
-    }
-
-    // Move to the selected next step and mark it as visited
-    current = nextStep;
-    visited[current.y][current.x] = 0;
-  }
-	*/
+Point getNextGhostStep(Point start, Point goal, short int ghostMode) {
+	Point next = start;
+	short int i, directions[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+	int optimalDist = ghostMode ? INT_MIN : INT_MAX;
+  
+  for (i = 0; i < 4; i++) {
+    Point newPos = {start.x + directions[i][1], start.y + directions[i][0]};
+		if (isValid(newPos)) {
+			if (ghostMode==0 && diagonalDistance(newPos, goal)<optimalDist) {
+			  optimalDist = diagonalDistance(newPos, goal);
+			  next = newPos;
+			} else if (ghostMode==1 && diagonalDistance(newPos, goal)>optimalDist) {
+			  optimalDist = diagonalDistance(newPos, goal);
+			  next = newPos;
+			} 
+		}
+	}
+	return next;
 }
