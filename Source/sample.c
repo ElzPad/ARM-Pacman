@@ -50,6 +50,7 @@ int main(void)
 	
 	GameInit();
 	BUTTON_init();												/* BUTTON Initialization              */
+	ADC_init();
 	
 	enable_timer(0);
 	enable_timer(1);
