@@ -40,7 +40,7 @@ void RIT_IRQHandler (void)
 	static int j_left = 0;
 	static int j_right = 0;
 	
-	UpdateFrames();
+	UpdateCharacter();
 	
 	if((LPC_GPIO1->FIOPIN & (1<<29)) == 0){	
 		/* Joytick UP pressed */

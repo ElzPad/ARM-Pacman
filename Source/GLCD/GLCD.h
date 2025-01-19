@@ -24,6 +24,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "LPC17xx.h"
+#include "../game/game.h"
 #include <stdio.h>
 
 /* Private define ------------------------------------------------------------*/
@@ -70,7 +71,8 @@
 #define Magenta        0xF81F
 #define Green          0x07E0
 #define Cyan           0x7FFF
-#define Yellow         0xFFE0
+#define Yellow         0xFE60
+#define Pink					 0xFC1F
 
 /******************************************************************************
 * Function Name  : RGB565CONVERT
@@ -105,9 +107,10 @@ void LCD_DrawGameOver(void);
 void LCD_DrawWinMessage(void);
 void LCD_DrawPauseMessage(void);
 void LCD_ClearMessage (void);
-void LCD_DrawImage(int startX, int startY, int size, uint16_t* imagePixels);
-void LCD_DrawCharacter(int positionX, int positionY, short int direction, short int alt);
-void LCD_ClearCharacter(int positionX, int positionY);
+void LCD_DrawImage(Point start, int size, uint8_t* imagePixels);
+void LCD_DrawCharacter(Point position, short int direction, short int alt);
+void LCD_DrawGhost(Point position, short int version);
+void LCD_ClearCharacter(Point position);
 
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);

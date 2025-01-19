@@ -80,7 +80,8 @@ void TIMER1_IRQHandler (void)
 ******************************************************************************/
 void TIMER2_IRQHandler (void)
 {
-	disable_timer(1);
+	UpdateGhost();
+	
   LPC_TIM2->IR = 1;			/* clear interrupt flag */
   return;
 }
